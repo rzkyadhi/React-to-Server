@@ -2,6 +2,8 @@ import logo from './logo.svg';
 import './App.css';
 import React, { Component } from 'react';
 import axios from 'axios';
+import Members from './component/Members/Members.js';
+import Form from './component/Form/Form.js';
 
 class App extends Component {
   constructor(props){
@@ -80,6 +82,7 @@ class App extends Component {
       console.log(error)
     })
   }
+
   editButtonHandler = member => {
     this.setState({
       first_name: member.first_name,
@@ -112,34 +115,22 @@ class App extends Component {
           <div className="col-md-6" style={{ border: "1px solid black" }}>
             <h2>Member</h2>
             <div className="row">
-              { this.state.members.map((member, index) => (
-                  <div className="col-md-6" key={ member.id }>
-                    <div className="card" style={{ margin: 10 }}>
-                      <div className="card-body">
-                        <h5 className="card-title">{member.id}</h5>
-                        <h5 className="card-title">{member.first_name}</h5>
-                        <h5 className="card-title">{member.last_name}</h5>
-                        <button className="btn btn-primary" onClick={() => this.editButtonHandler(member)}>Edit</button>
-                        <button className="btn btn-danger" onClick={() => this.deleteButtonHandler(member.id)}>Delete</button>
-                      </div>
-                    </div>
-                  </div>
-              ))}
+              <Members 
+                members = {this.state.members}
+                editButtonClick = {(member) => this.editButtonHandler(member)}
+                deleteButtonClick = {(id) => this.deleteButtonHandler(id)}
+              />
             </div>
           </div>
           <div className="col-md-6" style={{ border: "1px solid black" }}>
             <h2>Form {this.state.formStatus}</h2>
-            <form onSubmit={this.submitButtonHandler}>
-              <div className="form-group">
-                <label>First Name</label>
-                <input type="text" className="form-control" name="first_name" value={this.state.first_name} onChange={this.inputChangeHandler} />
-              </div>
-              <div className="form-group">
-                <label>Last Name</label>
-                <input type="text" className="form-control" name="last_name" value={this.state.last_name} onChange={this.inputChangeHandler} />
-              </div>
-              <button type="submit" className="btn btn-primary" disabled={this.state.buttonDisabled}>Submit</button>
-            </form>
+            <Form 
+              onSubmitForm = {this.submitButtonHandler}
+              onChange = {this.inputChangeHandler}
+              first_name = {this.state.first_name}
+              last_name = {this.state.last_name}
+              buttonDisabled = {this.state.buttonDisabled}
+            />
           </div>
         </div>
       </div>
